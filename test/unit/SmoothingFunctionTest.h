@@ -8,6 +8,7 @@
 #include "unity.h"
 #include <SmoothingFunction.h>
 
+using namespace dataUtils;
 namespace smoothingFunction {
 
     void returnsSameValue() {
