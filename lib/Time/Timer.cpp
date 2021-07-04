@@ -6,7 +6,7 @@
 #include <Arduino.h>
 
 bool time::Timer::isReady() {
-    unsigned long currentTime = millis();
+    unsigned long currentTime = clock();
 
     if (previousTime + duration > currentTime) {
         return false;
@@ -16,8 +16,8 @@ bool time::Timer::isReady() {
     return true;
 }
 
-time::Timer::Timer(int duration) : duration(duration) {}
-
 void time::Timer::start() {
     previousTime = millis();
 }
+
+time::Timer::Timer(int duration, const time::Clock &clock) : duration(duration), clock(clock) {}

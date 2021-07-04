@@ -8,7 +8,8 @@
 
 namespace time {
     void test() {
-        Timer timer{250};
+        Clock clock;
+        Timer timer{250, clock};
         timer.start();
         delay(50);
         TEST_ASSERT_FALSE(timer.isReady());

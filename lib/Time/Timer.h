@@ -4,13 +4,17 @@
 
 #ifndef TIMER_H
 #define TIMER_H
+
+#include "Clock.h"
+
 namespace time {
     class Timer {
         int duration;
         unsigned long previousTime = 0;
+        const Clock &clock;
 
     public:
-        explicit Timer(int duration);
+        Timer(int duration, const Clock &clock);
 
         void start();
 

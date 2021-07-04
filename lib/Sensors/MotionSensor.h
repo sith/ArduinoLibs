@@ -1,17 +1,35 @@
-//
-// Created by Fedorov, Alex on 6/25/21.
-//
+#ifndef ARDUINOLIBS_MOTIONSENSOR_H
+#define ARDUINOLIBS_MOTIONSENSOR_H
+#include "Arduino.h"
 
-#ifndef BOATCOMPUTER_MOTIONSENSOR_H
-#define BOATCOMPUTER_MOTIONSENSOR_H
 namespace sensors {
-    template<typename ACCELERATION_SENSOR>
+    template<typename ACCELERATION_SENSOR, typename CLOCK>
     class MotionSensor {
-    public:
-        MotionSensor(const ACCELERATION_SENSOR &accelerationSensor) : accelerationSensor(accelerationSensor) {}
-
-    private:
         const ACCELERATION_SENSOR &accelerationSensor;
+        const CLOCK &clock;
+        unsigned long previousTime;
+        double currentSpeed = 0.0;
+        double currentDistance = 0.0;
+    public:
+        MotionSensor(const ACCELERATION_SENSOR &accelerationSensor, const CLOCK &clock) : accelerationSensor(
+                accelerationSensor), clock(clock) {
+            previousTime = clock();
+        }
+
+        double getSpeed() {
+            return currentSpeed;
+        }
+
+        double getDistance() {
+            return currentDistance;
+        }
+
+        void process() {
+            double dt = clock() - previousTime;
+            currentSpeed += accelerationSensor() * dt;
+            currentDistance += currentSpeed * dt;
+            previousTime += dt;
+        }
     };
 }
-#endif //BOATCOMPUTER_MOTIONSENSOR_H
+#endif //ARDUINOLIBS_MOTIONSENSOR_H
